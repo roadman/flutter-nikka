@@ -73,6 +73,14 @@ class TodoDataSource extends DataTableSource {
     _selectedCount = checked ? _todos.length : 0;
     notifyListeners();
   }
+
+  void _addRow() {
+    _todos.add(
+      new Todo('todo', 0)
+    );
+    notifyListeners();
+  }
+
 }
 
 class TodoTable extends StatefulWidget {
@@ -125,6 +133,11 @@ class _DataTableDemoState extends State<TodoTable> {
             source: _todosDataSource
           )
         ]
+      ),
+      floatingActionButton: new FloatingActionButton(	
+        onPressed: _todosDataSource._addRow,
+        tooltip: 'Increment',	
+        child: new Icon(Icons.add),	
       )
     );
   }
