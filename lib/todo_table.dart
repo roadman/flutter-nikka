@@ -31,6 +31,11 @@ class _DataTableDemoState extends State<TodoTable> {
     setState(() {});
   }
 
+  void _deleteRow(Todo todo) {
+    _todos.remove(todo);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -67,7 +72,7 @@ class _DataTableDemoState extends State<TodoTable> {
                   Icons.delete,
                   semanticLabel: 'Delete',
                 ),
-                onPressed: null,
+                onPressed: () => _deleteRow(_todos[index])
                 //color: iconButtonToggle ? Theme.of(context).primaryColor : null,
               )
             ],
