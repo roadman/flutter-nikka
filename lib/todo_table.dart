@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class Todo {
   Todo(this.selected, this.name, this.priority);
@@ -48,7 +47,29 @@ class _DataTableDemoState extends State<TodoTable> {
                   setState(() {});
                 }
               ),
-              new Text(_todos[index].name)
+              new Text(_todos[index].name),
+              new IconButton(
+                icon: const Icon(
+                  Icons.thumb_up,
+                  semanticLabel: 'Priority up',
+                ),
+                onPressed: null,
+              ),
+              new IconButton(
+                icon: const Icon(
+                  Icons.thumb_down,
+                  semanticLabel: 'Priority down',
+                ),
+                onPressed: null,
+              ),
+              new IconButton(
+                icon: const Icon(
+                  Icons.delete,
+                  semanticLabel: 'Delete',
+                ),
+                onPressed: null,
+                //color: iconButtonToggle ? Theme.of(context).primaryColor : null,
+              )
             ],
           );
         }
