@@ -52,7 +52,9 @@ class _DataTableDemoState extends State<TodoTable> {
                   setState(() {});
                 }
               ),
-              new Text(_todos[index].name),
+              new Expanded(
+                child: new Text(_todos[index].name)
+              ),
               new IconButton(
                 icon: const Icon(
                   Icons.thumb_up,
@@ -74,6 +76,7 @@ class _DataTableDemoState extends State<TodoTable> {
                 ),
                 onPressed: () => _deleteRow(_todos[index])
                 //color: iconButtonToggle ? Theme.of(context).primaryColor : null,
+                
               )
             ],
           );
