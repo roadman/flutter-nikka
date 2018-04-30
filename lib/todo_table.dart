@@ -4,6 +4,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'todo_dialog.dart';
+
 class Todo {
   Todo(this.selected, this.name, this.priority);
   String name;
@@ -53,7 +55,15 @@ class _DataTableDemoState extends State<TodoTable> {
                 }
               ),
               new Expanded(
-                child: new Text(_todos[index].name)
+                child: new FlatButton(
+                  child: new Text(_todos[index].name),
+                  onPressed: () {
+                    Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
+                      builder: (BuildContext context) => new TodoDialog(),
+                      fullscreenDialog: true,
+                    ));
+                  }
+                )
               ),
               new IconButton(
                 icon: const Icon(
