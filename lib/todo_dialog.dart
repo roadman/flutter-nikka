@@ -16,18 +16,27 @@ enum DismissDialogAction {
 }
 
 class TodoDialog extends StatefulWidget {
+  String _eventName;
+
+  TodoDialog(String eventName) {
+    this._eventName = eventName;
+  }
   @override
-  TodoDialogState createState() => new TodoDialogState();
+  TodoDialogState createState() => new TodoDialogState(_eventName);
 }
 
 class TodoDialogState extends State<TodoDialog> {
   bool _saveNeeded = false;
-  bool _hasLocation = false;
   bool _hasName = false;
   String _eventName;
+  
+  TodoDialogState(String eventName) {
+    this._eventName = eventName;
+    this._hasName = true;
+  }
 
   Future<bool> _onWillPop() async {
-    _saveNeeded = _hasLocation || _hasName || _saveNeeded;
+    _saveNeeded = _hasName || _saveNeeded;
     if (!_saveNeeded)
       return true;
 
@@ -86,8 +95,11 @@ class TodoDialogState extends State<TodoDialog> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               alignment: Alignment.bottomLeft,
               child: new TextField(
+                controller: new TextEditingController(
+                  text: _eventName
+                ),
                 decoration: const InputDecoration(
-                  labelText: 'Event name',
+                  labelText: 'Todo title',
                   filled: true
                 ),
                 style: theme.textTheme.headline,

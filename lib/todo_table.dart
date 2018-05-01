@@ -59,7 +59,7 @@ class _DataTableDemoState extends State<TodoTable> {
                   child: new Text(_todos[index].name),
                   onPressed: () {
                     Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
-                      builder: (BuildContext context) => new TodoDialog(),
+                      builder: (BuildContext context) => new TodoDialog(_todos[index].name),
                       fullscreenDialog: true,
                     ));
                   }
