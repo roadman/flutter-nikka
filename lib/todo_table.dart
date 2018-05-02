@@ -5,13 +5,7 @@
 import 'package:flutter/material.dart';
 
 import 'todo_dialog.dart';
-
-class Todo {
-  Todo(this.selected, this.name, this.priority);
-  String name;
-  int priority;
-  bool selected;
-}
+import 'todo.dart';
 
 class TodoTable extends StatefulWidget {
   static const String routeName = '/material/data-table';
@@ -59,7 +53,7 @@ class _DataTableDemoState extends State<TodoTable> {
                   child: new Text(_todos[index].name),
                   onPressed: () {
                     Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
-                      builder: (BuildContext context) => new TodoDialog(_todos[index].name),
+                      builder: (BuildContext context) => new TodoDialog(_todos[index]),
                       fullscreenDialog: true,
                     ));
                   }

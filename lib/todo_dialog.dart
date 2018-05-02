@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'todo.dart';
 
 // This demo is based on
 // https://material.google.com/components/dialogs.html#dialogs-full-screen-dialogs
@@ -16,22 +17,22 @@ enum DismissDialogAction {
 }
 
 class TodoDialog extends StatefulWidget {
-  String _eventName;
+  Todo _todo;
 
-  TodoDialog(String eventName) {
-    this._eventName = eventName;
+  TodoDialog(Todo todo) {
+    this._todo = todo;
   }
   @override
-  TodoDialogState createState() => new TodoDialogState(_eventName);
+  TodoDialogState createState() => new TodoDialogState(_todo);
 }
 
 class TodoDialogState extends State<TodoDialog> {
   bool _saveNeeded = false;
   bool _hasName = false;
-  String _eventName;
+  Todo _todo;
   
-  TodoDialogState(String eventName) {
-    this._eventName = eventName;
+  TodoDialogState(Todo todo) {
+    this._todo = todo;
     this._hasName = true;
   }
 
@@ -76,11 +77,12 @@ class TodoDialogState extends State<TodoDialog> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(_hasName ? _eventName : 'Event Name TBD'),
+        title: new Text(_hasName ? _todo.name : 'Event Name TBD'),
         actions: <Widget> [
           new FlatButton(
             child: new Text('SAVE', style: theme.textTheme.body1.copyWith(color: Colors.white)),
             onPressed: () {
+              
               Navigator.pop(context, DismissDialogAction.save);
             }
           )
@@ -96,7 +98,7 @@ class TodoDialogState extends State<TodoDialog> {
               alignment: Alignment.bottomLeft,
               child: new TextField(
                 controller: new TextEditingController(
-                  text: _eventName
+                  text: _todo.name
                 ),
                 decoration: const InputDecoration(
                   labelText: 'Todo title',
@@ -107,7 +109,7 @@ class TodoDialogState extends State<TodoDialog> {
                   setState(() {
                     _hasName = value.isNotEmpty;
                     if (_hasName) {
-                      _eventName = value;
+                      _todo.name = value;
                     }
                   });
                 }
