@@ -31,7 +31,17 @@ class _DataTableDemoState extends State<TodoTable> {
     _todos.remove(todo);
     setState(() {});
   }
-
+  
+  void _upPriority(Todo todo) {
+    todo.upPriority();
+    setState(() {});
+  }
+  
+  void _downPriority(Todo todo) {
+    todo.downPriority();
+    setState(() {});
+  }
+  
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -59,19 +69,22 @@ class _DataTableDemoState extends State<TodoTable> {
                   }
                 )
               ),
+              new Expanded(
+                child: new Text(_todos[index].priority.toString()),
+              ),
               new IconButton(
                 icon: const Icon(
                   Icons.thumb_up,
                   semanticLabel: 'Priority up',
                 ),
-                onPressed: null,
+                onPressed: () => _upPriority(_todos[index])
               ),
               new IconButton(
                 icon: const Icon(
                   Icons.thumb_down,
                   semanticLabel: 'Priority down',
                 ),
-                onPressed: null,
+                onPressed: () => _downPriority(_todos[index])
               ),
               new IconButton(
                 icon: const Icon(
@@ -80,7 +93,6 @@ class _DataTableDemoState extends State<TodoTable> {
                 ),
                 onPressed: () => _deleteRow(_todos[index])
                 //color: iconButtonToggle ? Theme.of(context).primaryColor : null,
-                
               )
             ],
           );
