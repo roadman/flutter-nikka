@@ -17,12 +17,11 @@ class TodoTable extends StatefulWidget {
 class _DataTableDemoState extends State<TodoTable> {
   
   final List<Todo> _todos = <Todo>[
-    new Todo(false, 'Sample todo', 0)
   ];
 
   void _addRow() {
     _todos.add(
-      new Todo(false, 'todo', 0)
+      new Todo(false, 'todo', 1)
     );
     setState(() {});
   }

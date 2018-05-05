@@ -77,7 +77,7 @@ class TodoDialogState extends State<TodoDialog> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(_hasName ? _todo.name : 'Event Name TBD'),
+        title: new Text(_hasName ? _todo.name : ''),
         actions: <Widget> [
           new FlatButton(
             child: new Text('SAVE', style: theme.textTheme.body1.copyWith(color: Colors.white)),
@@ -108,9 +108,9 @@ class TodoDialogState extends State<TodoDialog> {
                 onChanged: (String value) {
                   setState(() {
                     _hasName = value.isNotEmpty;
-                    if (_hasName) {
+                    //if (_hasName) {
                       _todo.name = value;
-                    }
+                    //}
                   });
                 }
               )
