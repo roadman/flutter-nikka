@@ -2,13 +2,32 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:io';
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'todo_dialog.dart';
 import 'todo.dart';
 
 class TodoTable extends StatefulWidget {
   static const String routeName = '/material/data-table';
+  
+  TodoTable() {
+    initDatabase();
+  }
+  
+  void initDatabase() async {
+    // Get a location using path_provider
+    // Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    // String path = join(documentsDirectory.path, "nikka.db");
+    // await openDatabase(path, version: 1,
+    //     onCreate: (Database db, int version) async {
+    //   // When creating the db, create the table
+    //   await db.execute("CREATE TABLE Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
+    // });
+  }
 
   @override
   _DataTableDemoState createState() => new _DataTableDemoState();
