@@ -7,6 +7,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'todo_dialog.dart';
 import 'todo.dart';
@@ -19,14 +20,10 @@ class TodoTable extends StatefulWidget {
   }
   
   void initDatabase() async {
-    // Get a location using path_provider
-    // Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    // String path = join(documentsDirectory.path, "nikka.db");
-    // await openDatabase(path, version: 1,
-    //     onCreate: (Database db, int version) async {
-    //   // When creating the db, create the table
-    //   await db.execute("CREATE TABLE Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
-    // });
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = documentsDirectory.path + "nikka.db";
+    Database db = await openDatabase(path);
+    await db.execute("CREATE TABLE Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
   }
 
   @override
