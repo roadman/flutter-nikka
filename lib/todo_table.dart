@@ -14,6 +14,8 @@ import 'todo.dart';
 
 class TodoTable extends StatefulWidget {
   static const String routeName = '/material/data-table';
+  Database db;
+  
   
   TodoTable() {
     initDatabase();
@@ -22,23 +24,38 @@ class TodoTable extends StatefulWidget {
   void initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = documentsDirectory.path + "nikka.db";
-    Database db = await openDatabase(path);
+    db = await openDatabase(path);
     await db.execute("CREATE TABLE  IF NOT EXISTS Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
   }
 
   @override
-  _DataTableDemoState createState() => new _DataTableDemoState();
+  _DataTableDemoState createState() => new _DataTableDemoState(db);
 }
 
 class _DataTableDemoState extends State<TodoTable> {
-  
-  final List<Todo> _todos = <Todo>[
-  ];
+  List<Todo> _todos;
+  Database _db;
 
-  void _addRow() {
-    _todos.add(
-      new Todo(false, 'todo', 1)
-    );
+  _DataTableDemoState(Database db) {
+    _db = db;
+    loadTodos();
+  }
+  
+  void loadTodos() async {
+    List<Map> list = await _db.rawQuery('SELECT * FROM Todo');
+    _todos = <Todo>[];
+    list.forEach(((todo) {
+      _todos.add( 
+        new Todo(false, todo['name'], todo['priority'])
+      );
+    }));
+  }
+  
+  void _addRow() async {
+    await _db.rawInsert(
+      'INSERT INTO Todo(name, priority) VALUES(?, ?)',
+      ["todo", 1]);
+    loadTodos();
     setState(() {});
   }
 
