@@ -23,7 +23,7 @@ class TodoTable extends StatefulWidget {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = documentsDirectory.path + "nikka.db";
     Database db = await openDatabase(path);
-    await db.execute("CREATE TABLE Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
+    await db.execute("CREATE TABLE  IF NOT EXISTS Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
   }
 
   @override
