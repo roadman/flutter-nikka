@@ -14,34 +14,40 @@ import 'todo.dart';
 
 class TodoTable extends StatefulWidget {
   static const String routeName = '/material/data-table';
-  Database db;
-  
   
   TodoTable() {
     initDatabase();
   }
   
   void initDatabase() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = documentsDirectory.path + "nikka.db";
-    db = await openDatabase(path);
-    await db.execute("CREATE TABLE  IF NOT EXISTS Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
+
   }
 
   @override
-  _DataTableDemoState createState() => new _DataTableDemoState(db);
+  _DataTableDemoState createState() => new _DataTableDemoState();
 }
 
 class _DataTableDemoState extends State<TodoTable> {
-  List<Todo> _todos;
+  List<Todo> _todos = <Todo>[];
   Database _db;
 
-  _DataTableDemoState(Database db) {
-    _db = db;
+  _DataTableDemoState() {
     loadTodos();
   }
   
   void loadTodos() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = documentsDirectory.path + "/nikka.db";
+    print(path);
+    //FileStat res = await FileStat.stat(path);
+    //print(res);
+    //if(res.type == FileSystemEntityType.NOT_FOUND) {
+    //  print('sqlite file create');
+    //}
+    print(_db);
+    _db = await openDatabase(path);
+    print(_db);
+    await _db.execute("CREATE TABLE  IF NOT EXISTS Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
     List<Map> list = await _db.rawQuery('SELECT * FROM Todo');
     _todos = <Todo>[];
     list.forEach(((todo) {
@@ -52,9 +58,10 @@ class _DataTableDemoState extends State<TodoTable> {
   }
   
   void _addRow() async {
-    await _db.rawInsert(
+    int idx = await _db.rawInsert(
       'INSERT INTO Todo(name, priority) VALUES(?, ?)',
       ["todo", 1]);
+    print(idx);
     loadTodos();
     setState(() {});
   }
