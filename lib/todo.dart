@@ -3,10 +3,13 @@
 // found in the LICENSE file.
 
 class Todo {
-  Todo(this.selected, this.name, this.priority);
+  Todo(this.id, this.selected, this.name, this.priority);
+  
+  int id;
   String name;
   int priority;
   bool selected;
+  
   void upPriority() {
     if(this.isNotMaxPriority()) {
       this.priority++;

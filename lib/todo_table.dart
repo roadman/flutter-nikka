@@ -4,6 +4,7 @@
 
 import 'dart:io';
 import 'dart:core';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -32,29 +33,26 @@ class _DataTableDemoState extends State<TodoTable> {
   Database _db;
 
   _DataTableDemoState() {
-    loadTodos();
   }
   
-  void loadTodos() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = documentsDirectory.path + "/nikka.db";
-    print(path);
-    //FileStat res = await FileStat.stat(path);
-    //print(res);
-    //if(res.type == FileSystemEntityType.NOT_FOUND) {
-    //  print('sqlite file create');
-    //}
-    print(_db);
-    _db = await openDatabase(path);
-    print(_db);
-    await _db.execute("CREATE TABLE  IF NOT EXISTS Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
+  Future<int> loadTodos(bool isCreate) async {
+    if(_db == null) {
+      Directory documentsDirectory = await getApplicationDocumentsDirectory();
+      String path = documentsDirectory.path + "/nikka.db";
+      print(path);
+      _db = await openDatabase(path);
+    }
+    if(isCreate) {
+      await _db.execute("CREATE TABLE  IF NOT EXISTS Todo (id INTEGER PRIMARY KEY, name TEXT, priority INTEGER)");
+    }
     List<Map> list = await _db.rawQuery('SELECT * FROM Todo');
     _todos = <Todo>[];
     list.forEach(((todo) {
       _todos.add( 
-        new Todo(false, todo['name'], todo['priority'])
+        new Todo(todo['id'], false, todo['name'], todo['priority'])
       );
     }));
+    return _todos.length;
   }
   
   void _addRow() async {
@@ -62,12 +60,15 @@ class _DataTableDemoState extends State<TodoTable> {
       'INSERT INTO Todo(name, priority) VALUES(?, ?)',
       ["todo", 1]);
     print(idx);
-    loadTodos();
+    loadTodos(false);
     setState(() {});
   }
 
-  void _deleteRow(Todo todo) {
-    _todos.remove(todo);
+  void _deleteRow(Todo todo) async {
+  // Delete a record
+    int count = await _db.rawDelete('DELETE FROM Todo WHERE id = ?', [todo.id]);
+    assert(count == 1);
+    loadTodos(false);
     setState(() {});
   }
   
@@ -83,6 +84,8 @@ class _DataTableDemoState extends State<TodoTable> {
   
   @override
   Widget build(BuildContext context) {
+    loadTodos(true);
+    print('widget build: todo.length -> ' + _todos.length.toString());
     return new Scaffold(
       appBar: new AppBar(title: const Text('Todo list')),
       body: new ListView.builder(
