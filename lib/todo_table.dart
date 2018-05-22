@@ -35,6 +35,12 @@ class _DataTableDemoState extends State<TodoTable> {
   _DataTableDemoState() {
   }
   
+  @override
+  void initState() {
+    super.initState();
+    loadTodos(true).then((count) => print(count));
+  }
+  
   Future<int> loadTodos(bool isCreate) async {
     if(_db == null) {
       Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -60,7 +66,7 @@ class _DataTableDemoState extends State<TodoTable> {
       'INSERT INTO Todo(name, priority) VALUES(?, ?)',
       ["todo", 1]);
     print(idx);
-    loadTodos(false);
+    await loadTodos(false);
     setState(() {});
   }
 
@@ -68,7 +74,7 @@ class _DataTableDemoState extends State<TodoTable> {
   // Delete a record
     int count = await _db.rawDelete('DELETE FROM Todo WHERE id = ?', [todo.id]);
     assert(count == 1);
-    loadTodos(false);
+    await loadTodos(false);
     setState(() {});
   }
   
@@ -84,7 +90,6 @@ class _DataTableDemoState extends State<TodoTable> {
   
   @override
   Widget build(BuildContext context) {
-    loadTodos(true);
     print('widget build: todo.length -> ' + _todos.length.toString());
     return new Scaffold(
       appBar: new AppBar(title: const Text('Todo list')),
